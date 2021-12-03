@@ -35,14 +35,14 @@ class QuizInterface:
 
     def get_next_question(self):
         self.canvas.config(self.canvas, bg="white")
+        self.score.config(text=f"Score: {self.quiz.score}")
         if self.quiz.still_has_questions():
-            self.score.config(text=f"Score: {self.quiz.score}")
             q_text = self.quiz.next_question()
             self.canvas.itemconfig(self.question_text, text=q_text)
+            self.button_state(state="active")
         else:
             self.canvas.itemconfig(self.question_text, text="You've reached the end of the questions.")
-            self.true_button.config(state="disabled")
-            self.false_button.config(state="disabled")
+            self.button_state(state="disabled")
 
 
     def true_method(self):
@@ -60,5 +60,9 @@ class QuizInterface:
             self.canvas.config(self.canvas, bg="green")
         else:
             self.canvas.config(self.canvas, bg="red")
+        self.button_state(state="disabled")
         self.window.after(1000, self.get_next_question)
 
+    def button_state(self, state:str):
+        self.true_button.config(state=state)
+        self.false_button.config(state=state)
